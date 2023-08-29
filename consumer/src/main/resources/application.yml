@@ -1,0 +1,21 @@
+spring:
+  rabbitmq:
+    host: 192.168.101.65
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /         #虚拟机
+
+    #publisher-confirm-type支持两种类型
+    #simple: 同步等待confirm结果，直到超时，会阻塞其他消息
+    #correlated: 异步回调，定义Confirmcallback，MQ返回结果时会回调这个ConfirmCallback
+    publisher-confirm-type: correlated
+    publisher-returns: true   #开启发送端消息抵达队列的确认
+    template:
+      mandatory: true #定义消息路由失败时的策略。true：则调用Returncallback; false：则直接丢弃消息
+
+    #签收模式配置
+    listener:
+      simple:
+        acknowledge-mode: manual    #手动签收
+        prefetch: 1      #每次只能获取1条消息，处理完成才能获取下一个消息
