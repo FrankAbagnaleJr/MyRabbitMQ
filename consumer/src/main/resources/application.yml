@@ -5,17 +5,20 @@ spring:
     username: guest
     password: guest
     virtual-host: /         #虚拟机
+      #cache:
+      #connection:
+    #mode: channel  #一个连接可以带多个通道
 
-    #publisher-confirm-type支持两种类型
-    #simple: 同步等待confirm结果，直到超时，会阻塞其他消息
-    #correlated: 异步回调，定义Confirmcallback，MQ返回结果时会回调这个ConfirmCallback
-    publisher-confirm-type: correlated
-    publisher-returns: true   #开启发送端消息抵达队列的确认
-    template:
-      mandatory: true #定义消息路由失败时的策略。true：则调用Returncallback; false：则直接丢弃消息
-
+    #-----------------------消费端配置------------------------------------
     #签收模式配置
     listener:
       simple:
-        acknowledge-mode: manual    #手动签收
+        acknowledge-mode: manual    #手动签收,接收后要channel.ba
         prefetch: 1      #每次只能获取1条消息，处理完成才能获取下一个消息
+        retry:
+          enabled: true  #开启消费者失败重试
+          initial-interval: 1000  #第一次失败重试为1秒
+          multiplier: 1  #下次失败的等待时长倍数，下次等待时长 = multiplier * 上次的时长
+          max-attempts: 3  #最大重试次数
+          max-interval: 10000  #最大等待时长10秒
+          stateless: true  #true无状态，false有状态。如果业务中包含事务，这里改为false
