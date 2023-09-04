@@ -49,7 +49,7 @@ public class MQCommonCinfig implements ApplicationContextAware {
     }
 
     /**
-     * 定义失败重试次数上限的消息，重新发送到指定的交换机
+     * 定义失败重试次数上限的消息，重新发送到指定的交换机。并且消息里还会记录异常原因
      * @param rabbitTemplate
      * @return
      */

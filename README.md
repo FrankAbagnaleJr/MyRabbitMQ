@@ -1,1 +1,11 @@
 做了AMQP的生产者确认
+
+写个ApplicationContextAware的实现类，可重新配置rabbitTemplate对象的ReturnsCallback和ConfirmCallback
+
+消息持久化
+1. 交换机持久化
+2. 队列持久化
+3. 消息持久化
+
+消息发送要接收ack确认，收到ack说明到交换机了，还得再判断是否到达队列
+nack是没有到达交换机，就回执行ReturnsCallback逻辑
